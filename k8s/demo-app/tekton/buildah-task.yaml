@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: buildah
-  namespace: hello-chris
+  namespace: demo-app
   annotations:
     argocd.argoproj.io/sync-wave: "2"
     argocd.argoproj.io/sync-options: "SkipDryRunOnMissingResource=true"
@@ -22,7 +22,7 @@ spec:
     description: Set buildah storage driver
     name: STORAGE_DRIVER
     type: string
-  - default: ./Dockerfile
+  - default: ./dev/Dockerfile
     description: Path to the Dockerfile to build.
     name: DOCKERFILE
     type: string
@@ -35,6 +35,9 @@ spec:
       registry)
     name: TLSVERIFY
     type: string
+  - default: ""
+    name: IMAGE_PUSH_SECRET_NAME
+    description: Kubernetes secrets contain image push username and password
   - default: oci
     description: The format of the built container, oci or docker
     name: FORMAT
@@ -71,31 +74,32 @@ spec:
       [[ "$(params.SKIP_PUSH)" == "true" ]] && echo "Push skipped" && exit 0
 
       buildah --storage-driver=$(params.STORAGE_DRIVER) push \
-        $(params.PUSH_EXTRA_ARGS) --tls-verify=$(params.TLSVERIFY) \
-        --authfile /workspace/output/secrets/config.json \
-        --digestfile $(workspaces.source.path)/image-digest $(params.IMAGE) \
-        docker://$(params.IMAGE)
-      cat $(workspaces.source.path)/image-digest | tee /tekton/results/APP_IMAGE_DIGEST
+        $(params.PUSH_EXTRA_ARGS) --creds ${USERNAME}:${PASSWORD} \
+        $(params.IMAGE) 
+      # cat $(workspaces.source.path)/image-digest | tee /tekton/results/APP_IMAGE_DIGEST
       echo $(params.IMAGE) | tee /tekton/results/APP_IMAGE_URL
     securityContext:
       capabilities:
         add:
         - SETFCAP
+    env:
+        - name: USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: $(params.IMAGE_PUSH_SECRET_NAME)
+              key: username
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: $(params.IMAGE_PUSH_SECRET_NAME)
+              key: password
     volumeMounts:
     - mountPath: /var/lib/containers
       name: varlibcontainers
-    - name: quay-auth-secret
-      mountPath: $(workspaces.output.path)/secrets
     workingDir: $(workspaces.output.path)
   volumes:
   - emptyDir: {}
     name: varlibcontainers
-  - name: quay-auth-secret
-    secret:
-      secretName: dockerconfigjson
-      items:
-        - key: .dockerconfigjson
-          path: config.json
   workspaces:
   - name: output  
   - name: source

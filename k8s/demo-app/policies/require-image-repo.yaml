@@ -2,7 +2,7 @@ apiVersion: kyverno.io/v1
 kind: Policy
 metadata:
   name: restrict-registries
-  namespace: hello-chris
+  namespace: demo-app
   annotations:
     argocd.argoproj.io/sync-wave: "2"
     argocd.argoproj.io/sync-options: "SkipDryRunOnMissingResource=true"
@@ -25,4 +25,4 @@ spec:
       pattern:
         spec:
           containers:
-          - image: "quay.io/cnuland/* | registry.redhat.io/*"
+          - image: "quay.io/fanyaegb/* | registry.redhat.io/*"
