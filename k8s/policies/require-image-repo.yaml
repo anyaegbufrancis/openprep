@@ -1,9 +1,7 @@
----
 apiVersion: kyverno.io/v1
-kind: Policy
+kind: ClusterPolicy
 metadata:
   name: restrict-registries
-  namespace: demo-app
   annotations:
     argocd.argoproj.io/sync-wave: "2"
     argocd.argoproj.io/sync-options: "SkipDryRunOnMissingResource=true"

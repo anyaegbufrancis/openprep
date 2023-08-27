@@ -5,9 +5,4 @@ metadata:
   name: openshift-gitops
 spec:
 
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: argo-applications
-spec:
+
