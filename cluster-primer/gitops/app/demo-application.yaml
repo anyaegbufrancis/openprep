@@ -2,13 +2,13 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: nginx-application
-  namespace: argo-applications
+  namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/sync-wave: "2"
 spec:
   destination:
     name: ''
-    namespace: '*'
+    namespace: 'demo-app'
     server: 'https://kubernetes.default.svc'
   source:
     path: k8s/application/app-argo/overlays/default
@@ -16,8 +16,6 @@ spec:
     targetRevision: HEAD
     directory:
       recurse: true  
-  destination: 
-     namespace: demo-app
   sources: []
   project: default
   syncPolicy:
