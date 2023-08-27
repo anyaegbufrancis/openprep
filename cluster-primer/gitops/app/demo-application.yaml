@@ -15,7 +15,9 @@ spec:
     repoURL: 'https://github.com/anyaegbufrancis/openprep.git'
     targetRevision: HEAD
     directory:
-      recurse: true
+      recurse: true  
+  destination: 
+     namespace: demo-app
   sources: []
   project: default
   syncPolicy:
