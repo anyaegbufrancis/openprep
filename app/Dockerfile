@@ -1,6 +1,18 @@
-FROM quay.io/app-sre/ubi8-nodejs-10:latest
-LABEL AUTHOR="Chris Nuland"
-ADD ./app/main.js $HOME/main.js
-ADD ./app/package.json $HOME/package.json
+FROM registry.access.redhat.com/ubi8:8.0
+LABEL AUTHOR="Francis Anyaegbu"
+RUN yum install -y --disableplugin=subscription-manager --nodocs nginx \
+  && yum clean all
+
+ADD test.html /usr/share/nginx/html/index.html
+
+ADD nginxconf.sed /tmp/
+RUN sed -i -f /tmp/nginxconf.sed /etc/nginx/nginx.conf
+
+RUN touch /run/nginx.pid \
+  && chgrp -R 0 /var/log/nginx /run/nginx.pid \
+  && chmod -R g+rwx /var/log/nginx /run/nginx.pid
+
 EXPOSE 8080
-ENTRYPOINT npm start
+USER 1001
+
+CMD nginx -g "daemon off;"

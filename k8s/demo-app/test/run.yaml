@@ -12,9 +12,9 @@ spec:
     name: hello-chris-pipeline
   params:
   - name: namespace
-    value: "hello-chris"
+    value: "demo-app"
   - name: deployment-name
-    value: "hello-chris"
+    value: "nginx"
   - name: git-url
     value: "https://github.com/cnuland/aro-hello-chris-tekton-chains.git"
   - name: git-revision

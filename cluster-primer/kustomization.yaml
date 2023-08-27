@@ -6,7 +6,7 @@ resources:
 - operator/openshift-gitops-operator.yaml ## installs openshift-gitops operator
 - gitops/app/demo-application.yaml
 - gitops/infra/kyverno.yaml
-- gitops/infra/pipelines.yaml ## installs openshift-pipelines operator
+- gitops/infra/openshift-pipelines.yaml ## installs openshift-pipelines operator
 - gitops/infra/policies.yaml
 - gitops/infra/onboarding.yaml
 - gitops/rbac/cluster-role-gitops.yaml
