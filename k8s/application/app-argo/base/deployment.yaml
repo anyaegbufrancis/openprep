@@ -20,7 +20,9 @@ spec:
     metadata:
       labels:
         deployment: demo-app
-    spec:
+    spec:      
+      imagePullSecrets:
+        - name:  quay-registry-credentials
       containers:
       - image: 'quay.io/fanyaegb/demo-app:1.0'
         name: 'demo-app'
