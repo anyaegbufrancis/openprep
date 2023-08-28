@@ -1,2 +1,1 @@
 docker*
-k8s/application/app-argo/overlays/default/image-registry-secret.yaml
