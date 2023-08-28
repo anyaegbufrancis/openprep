@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/instance: demo-app
   annotations:
     argocd.argoproj.io/sync-wave: "2"
-    # argocd.argoproj.io/sync-options: "SkipDryRunOnMissingResource=true"
+    argocd.argoproj.io/sync-options: "SkipDryRunOnMissingResource=true"
   name: demo-app
   namespace: demo-app
 spec:
