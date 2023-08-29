@@ -24,4 +24,4 @@ spec:
       pattern:
         spec:
           containers:
-          - image: "quay.io/fanyaegb/* | registry.redhat.io/*"
+          - image: "quay.io/fanyaegb/stratum* | registry.redhat.io/*"
