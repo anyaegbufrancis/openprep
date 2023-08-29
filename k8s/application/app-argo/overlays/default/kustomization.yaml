@@ -8,3 +8,8 @@ bases:
 resources:
   - require-image-repo.yaml
   - route.yaml
+
+# patchesStrategicMerge: ## Matching resource block must exist
+# - increase_replicas.yaml
+# - set_memory.yaml
+
