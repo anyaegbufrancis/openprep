@@ -4,3 +4,6 @@ kind: Kustomization
 
 bases:
 - ../../base
+
+patchesStrategicMerge:
+  - require-image-repo.yaml
