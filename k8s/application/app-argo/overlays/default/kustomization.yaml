@@ -5,6 +5,6 @@ kind: Kustomization
 bases:
 - ../../base
 
-patchesStrategicMerge:
+resources:
   # - require-image-repo.yaml
   - route.yaml
