@@ -18,12 +18,10 @@ spec:
       all:
       - resources:
           kinds:
-          - Deployment
+          - Pod
     validate:
       message: "Image registry not whitelisted"
       pattern:
         spec:
-           template:
-              spec:
-                 containers:
-                    - image: "quay.io/fanyaegb/* | registry.redhat.io/*"
+          containers:
+          - image: "quay.io/fanyaegb/* | registry.redhat.io/*"
