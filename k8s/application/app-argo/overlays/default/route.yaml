@@ -6,6 +6,7 @@ metadata:
     app.kubernetes.io/component: demo-app
     app.kubernetes.io/instance: nginx-application
   name: demo-app
+  namespace: demo-app
 spec:
   port:
     targetPort: 8080
