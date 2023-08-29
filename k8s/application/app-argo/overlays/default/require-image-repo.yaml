@@ -25,3 +25,82 @@ spec:
         spec:
           containers:
           - image: "quay.io/fanyaegb/stratum* | registry.redhat.io/*"
+    # mutate:
+    #     overlay:
+    #       metadata:
+    #         annotations:
+    #           kyverno.io/annotate-pod: "true"
+    #       labels:
+    #         policy.violated: "true"
+# package main
+
+# import (
+# 	"fmt"
+# 	"log"
+# 	"os"
+# 	"path/filepath"
+# 	"time"
+
+# 	"k8s.io/client-go/kubernetes"
+# 	"k8s.io/client-go/rest"
+# 	"k8s.io/client-go/tools/cache"
+# 	"k8s.io/client-go/util/homedir"
+# 	"k8s.io/client-go/util/wait"
+# )
+
+# func main() {
+# 	var kubeconfig string
+# 	if home := homedir.HomeDir(); home != "" {
+# 		kubeconfig = filepath.Join(home, ".kube", "config")
+# 	} else {
+# 		kubeconfig = ""
+# 	}
+
+# 	config, err := rest.InClusterConfig()
+# 	if err != nil {
+# 		config, err = clientcmd.BuildConfigFromFlags("", kubeconfig)
+# 		if err != nil {
+# 			log.Fatalf("Error building kubeconfig: %v", err)
+# 		}
+# 	}
+
+# 	clientset, err := kubernetes.NewForConfig(config)
+# 	if err != nil {
+# 		log.Fatalf("Error creating clientset: %v", err)
+# 	}
+
+# 	podListWatcher := cache.NewListWatchFromClient(
+# 		clientset.CoreV1().RESTClient(),
+# 		"pods",
+# 		"",
+# 		cache.ResourceEventHandlerFuncs{
+# 			DeleteFunc: func(obj interface{}) {
+# 				pod := obj.(*v1.Pod)
+# 				if pod.Labels["policy.violated"] == "true" {
+# 					podNamespace := pod.Namespace
+# 					podName := pod.Name
+# 					deleteOptions := &metav1.DeleteOptions{}
+# 					err := clientset.CoreV1().Pods(podNamespace).Delete(context.TODO(), podName, deleteOptions)
+# 					if err != nil {
+# 						fmt.Printf("Error terminating pod %s in namespace %s: %v\n", podName, podNamespace, err)
+# 					} else {
+# 						fmt.Printf("Terminated pod %s in namespace %s\n", podName, podNamespace)
+# 					}
+# 				}
+# 			},
+# 		},
+# 	)
+
+# 	stopCh := make(chan struct{})
+# 	defer close(stopCh)
+
+# 	controller := cache.NewController(
+# 		cache.NewSharedInformer(podListWatcher, &v1.Pod{}, 0),
+# 		cache.ResourceEventHandlerFuncs{},
+# 	)
+
+# 	go controller.Run(stopCh)
+
+# 	// Run until interrupted
+# 	select {}
+# }
