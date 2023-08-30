@@ -5,6 +5,9 @@ metadata:
     app: demo-app
     app.kubernetes.io/component: demo-app
     app.kubernetes.io/instance: nginx-application
+  annotations:
+    argocd.argoproj.io/sync-wave: "6"
+    argocd.argoproj.io/sync-options: "SkipDryRunOnMissingResource=true"
   name: demo-app
   namespace: demo-app
 spec:
