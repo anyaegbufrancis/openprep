@@ -3,8 +3,8 @@ kind: Application
 metadata:
   name: policies
   namespace: openshift-gitops
-  # annotations:
-  #   argocd.argoproj.io/sync-wave: "3"
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
 
 spec:
   destination:
@@ -16,10 +16,21 @@ spec:
     repoURL: 'https://github.com/anyaegbufrancis/openprep.git'
     targetRevision: HEAD
     directory:
-      recurse: false
+      recurse: false  
+  ignoreDifferences:
+  - group: kyverno.io
+    kind: ClusterPolicy
+    jsonPointers:
+    - /spec/rules
+  - group: kyverno.io
+    kind: Policy
+    jsonPointers:
+    - /spec/rules
   sources: []
   project: default
   syncPolicy:
-    automated:
-      prune: false
-      selfHeal: true
+     syncOptions:
+     - ServerSideApply=true
+     automated:
+        prune: false
+        selfHeal: true
