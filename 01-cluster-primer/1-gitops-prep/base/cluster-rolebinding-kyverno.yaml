@@ -8,7 +8,6 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: allow-priviledged-scc
-  # name: openshift-gitops-argocd-extended-clusterrole
 subjects:
   - kind: ServiceAccount
     name: kyverno

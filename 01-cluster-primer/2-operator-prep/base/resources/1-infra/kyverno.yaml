@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: kyverno
-  namespace: openshift-gitops
+  namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "2"
 spec:
@@ -11,7 +11,7 @@ spec:
     namespace: 'kyverno'
     server: 'https://kubernetes.default.svc'
   source:
-    path: k8s/operators/kyverno/overlays/default
+    path: 2-operator-prep/base/resources/2-operators/kyverno/overlays/default
     repoURL: 'https://github.com/anyaegbufrancis/openprep.git'
     targetRevision: HEAD
     directory:
@@ -30,6 +30,7 @@ spec:
   syncPolicy:
     syncOptions:
     - ServerSideApply=true
+    - CreateNamespace=true
     automated:
       prune: false
       selfHeal: true
