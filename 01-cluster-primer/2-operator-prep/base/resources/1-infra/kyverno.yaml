@@ -11,7 +11,7 @@ spec:
     namespace: 'kyverno'
     server: 'https://kubernetes.default.svc'
   source:
-    path: 2-operator-prep/base/resources/2-operators/kyverno/overlays/default
+    path: 01-cluster-primer/2-operator-prep/base/resources/2-operators/overlays/default
     repoURL: 'https://github.com/anyaegbufrancis/openprep.git'
     targetRevision: HEAD
     directory:
